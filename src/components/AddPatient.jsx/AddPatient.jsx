@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import api from "../../utils/axios";
 
 const AddPatient = () => {
@@ -17,13 +17,16 @@ const AddPatient = () => {
   useEffect(() => {
     fetchPatients();
   }, []);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const addPatient = async (data) => {
     console.log(data);
+    const response = await api.post("/patient", data);
+    console.log(response.data);
   };
   return (
     <Box
@@ -44,10 +47,10 @@ const AddPatient = () => {
         >
           Add New Patient
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(addPatient)}>
           <Stack gap={3}>
             <TextField
-              id="outlined-helperText"
+              id="outlined-basic"
               label="Name"
               variant="outlined"
               {...register("name")}
@@ -79,8 +82,12 @@ const AddPatient = () => {
         <Typography>Age:</Typography>
         <Typography>Gender:</Typography>
         <Stack flexDirection={"row"} justifyContent={"space-between"}>
-          <Button variant="contained">Edit</Button>
-          <Button variant="contained">Delete</Button>
+          <Button variant="contained" onClick={() => {}}>
+            Edit
+          </Button>
+          <Button variant="contained" onClick={() => {}}>
+            Delete
+          </Button>
         </Stack>
       </Stack>
     </Box>
