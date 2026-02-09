@@ -9,6 +9,7 @@ import api from "../../utils/axios";
 
 const AddPatient = () => {
   const [patients, setPatients] = useState([]);
+
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
     setPatients(res?.data?.resPatient);
@@ -16,7 +17,7 @@ const AddPatient = () => {
   useEffect(() => {
     fetchPatients();
   }, []);
-  console.log(patients);
+
   const {
     register,
     handleSubmit,
@@ -26,6 +27,13 @@ const AddPatient = () => {
     console.log(data);
     const response = await api.post("/patient/", data);
     console.log(response.data);
+  };
+  const deletePatient = async (id) => {
+    const response = await api.delete(`patient/${id}`);
+    if (response) {
+      alert("deleted successfully");
+    }
+    fetchPatients();
   };
   return (
     <Box
@@ -38,6 +46,8 @@ const AddPatient = () => {
         gap: 2,
       }}
     >
+      {/* <ul> */}
+
       <Box>
         <Typography
           mb={2}
@@ -76,24 +86,29 @@ const AddPatient = () => {
         </form>
       </Box>
       {/* Show Patient */}
-      {patients.map((item, index) => {
-        <ul>
-          <li>{item.name}</li>
-        </ul>;
-      })}
-      <Stack gap={2}>
-        <Typography>Name: </Typography>
-        <Typography>Age:</Typography>
-        <Typography>Gender:</Typography>
-        <Stack flexDirection={"row"} justifyContent={"space-between"}>
-          <Button variant="contained" onClick={() => {}}>
-            Edit
-          </Button>
-          <Button variant="contained" onClick={() => {}}>
-            Delete
-          </Button>
-        </Stack>
-      </Stack>
+      {patients &&
+        patients.map((item, index) => {
+          return (
+            <Stack gap={2} key={index}>
+              <Typography>Name: {item.name}</Typography>
+              <Typography>Age: {item.age}</Typography>
+              <Typography>Gender: {item.gender}</Typography>
+              <Stack flexDirection={"row"} justifyContent={"space-between"}>
+                <Button variant="contained" onClick={() => {}}>
+                  Edit
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    deletePatient(item._id);
+                  }}
+                >
+                  Delete
+                </Button>
+              </Stack>
+            </Stack>
+          );
+        })}
     </Box>
   );
 };
