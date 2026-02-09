@@ -9,15 +9,14 @@ import api from "../../utils/axios";
 
 const AddPatient = () => {
   const [patients, setPatients] = useState([]);
-  console.log(patients);
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
-    console.log(res.data.resPatient);
+    setPatients(res?.data?.resPatient);
   };
   useEffect(() => {
     fetchPatients();
   }, []);
-
+  console.log(patients);
   const {
     register,
     handleSubmit,
@@ -25,7 +24,7 @@ const AddPatient = () => {
   } = useForm();
   const addPatient = async (data) => {
     console.log(data);
-    const response = await api.post("/patient", data);
+    const response = await api.post("/patient/", data);
     console.log(response.data);
   };
   return (
@@ -35,7 +34,8 @@ const AddPatient = () => {
         border: "1px solid",
         p: 2,
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "start",
+        gap: 2,
       }}
     >
       <Box>
@@ -75,10 +75,14 @@ const AddPatient = () => {
           </Stack>
         </form>
       </Box>
-
       {/* Show Patient */}
+      {patients.map((item, index) => {
+        <ul>
+          <li>{item.name}</li>
+        </ul>;
+      })}
       <Stack gap={2}>
-        <Typography>Name</Typography>
+        <Typography>Name: </Typography>
         <Typography>Age:</Typography>
         <Typography>Gender:</Typography>
         <Stack flexDirection={"row"} justifyContent={"space-between"}>
