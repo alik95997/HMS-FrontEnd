@@ -7,10 +7,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
+import EditDoctor from "./EditDoctor";
 
 const AddDoctor = () => {
   const [theDoctors, settheDoctors] = useState([]);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState({});
   const {
     register,
     handleSubmit,
@@ -36,7 +38,7 @@ const AddDoctor = () => {
     try {
       const response = await api.delete(`/doctor/${id}`);
       if (response) {
-        <CustomizedSnackbars message={"Doctor deleted successfully"} />;
+        toast.success("Doctor deleted successfully");
       }
       fetchDoctors();
     } catch (error) {}
@@ -50,13 +52,12 @@ const AddDoctor = () => {
     }
     fetchDoctors();
   };
-
   // edit doctor function incomplete
-  const editDoctor = async (id) => {
-    console.log(id)
-    // setIsEditOpen(true);
-    // let updateDoctorId = theDoctors[id];
-    // console.log(updateDoctorId);
+  const editDoctor = async (theId) => {
+    const toEditTheDoctor = theDoctors.find((doctor) => doctor._id === theId);
+    setSelectedDoctor(toEditTheDoctor);
+    setIsEditOpen(true);
+    fetchDoctors();
     // const response = await api.patch(`doctor/${data?._id}`, data);
   };
   return (
@@ -148,18 +149,7 @@ const AddDoctor = () => {
               );
             })}
       </Box>
-      {isEditOpen && (
-        <form onSubmit={handleSubmit(editDoctor)}>
-          <input type="text" value={item._id} disabled />
-          <input type="text" {...register("name", { value: "data" })} />
-          <input type="number" {...register("age")} />
-          <input type="text" {...register("gender")} />
-          <input type="text" {...register("speciality")} />
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
-        </form>
-      )}
+      {isEditOpen && <EditDoctor user={selectedDoctor} />}
     </Box>
   );
 };
