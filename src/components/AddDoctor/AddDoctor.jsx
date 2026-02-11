@@ -1,15 +1,16 @@
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import api from "../../utils/axios";
+import { toast } from "react-toastify";
+
 const AddDoctor = () => {
   const [theDoctors, settheDoctors] = useState([]);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -30,19 +31,34 @@ const AddDoctor = () => {
   useEffect(() => {
     fetchDoctors();
   }, []);
-
-  //add the doctor
+  //delete doctor function
+  const deleteDoctor = async (id) => {
+    try {
+      const response = await api.delete(`/doctor/${id}`);
+      if (response) {
+        <CustomizedSnackbars message={"Doctor deleted successfully"} />;
+      }
+      fetchDoctors();
+    } catch (error) {}
+  };
+  //add the doctor function
   const addDoctor = async (data) => {
     console.log(data);
     const response = await api.post("/doctor/add-doctor", data);
-    console.log(response);
+    if (response) {
+      toast.success("Doctor added successfully");
+    }
+    fetchDoctors();
   };
 
+  // edit doctor function incomplete
   const editDoctor = async (id) => {
-    setIsEditOpen(true);
-    const response = await api.patch(`doctor/${id}`,data);
+    console.log(id)
+    // setIsEditOpen(true);
+    // let updateDoctorId = theDoctors[id];
+    // console.log(updateDoctorId);
+    // const response = await api.patch(`doctor/${data?._id}`, data);
   };
-
   return (
     <Box
       sx={{
@@ -97,31 +113,53 @@ const AddDoctor = () => {
             </Button>
           </Stack>
         </form>
-      
-
       </Box>
       {/* Show Doctor  */}
       <Box display={"flex"} flexDirection={"column"} gap={2} flexWrap={"wrap"}>
-        {theDoctors &&
-          theDoctors.map((item, index) => {
-            return (
-              <Stack key={index} gap={2}>
-                <Typography>Name: {item.name}</Typography>
-                <Typography>Age: {item.age}</Typography>
-                <Typography>Male : {item.male}</Typography>
-                <Typography>Speciality: {item.speciality}</Typography>
-                <Stack flexDirection={"row"} justifyContent={"space-between"}>
-                  <Button variant="contained" onClick={() => {}}>
-                    Edit
-                  </Button>
-                  <Button variant="contained" onClick={() => {}}>
-                    Delete
-                  </Button>
+        {theDoctors.length === 0
+          ? "No Doctor Found"
+          : theDoctors.map((item, index) => {
+              return (
+                <Stack key={index} gap={2}>
+                  <Typography>Name: {item.name}</Typography>
+                  <Typography>Age: {item.age}</Typography>
+                  <Typography>Male : {item.male}</Typography>
+                  <Typography>Speciality: {item.speciality}</Typography>
+                  <Typography>{item._id}</Typography>
+                  <Stack flexDirection={"row"} justifyContent={"space-between"}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        editDoctor(item._id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        deleteDoctor(item._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Stack>
                 </Stack>
-              </Stack>
-            );
-          })}
+              );
+            })}
       </Box>
+      {isEditOpen && (
+        <form onSubmit={handleSubmit(editDoctor)}>
+          <input type="text" value={item._id} disabled />
+          <input type="text" {...register("name", { value: "data" })} />
+          <input type="number" {...register("age")} />
+          <input type="text" {...register("gender")} />
+          <input type="text" {...register("speciality")} />
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        </form>
+      )}
     </Box>
   );
 };
