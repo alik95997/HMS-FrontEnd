@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 function App() {
   return (
     <>
-      ;<FullWidthTabs />
+      <FullWidthTabs />
     </>
   );
 }

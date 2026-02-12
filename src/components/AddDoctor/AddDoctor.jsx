@@ -31,13 +31,14 @@ const AddDoctor = () => {
       console.log(error);
     }
   };
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
   useEffect(() => {
     fetchDoctors();
   }, []);
+  
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+
   //delete doctor function
   const deleteDoctor = async (id) => {
     try {

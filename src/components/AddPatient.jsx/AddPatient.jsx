@@ -6,13 +6,19 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import api from "../../utils/axios";
+import EditPatient from "./EditPatient";
+import CloseIcon from "@mui/icons-material/Close";
+import { Drawer } from "@mui/material";
 
 const AddPatient = () => {
   const [patients, setPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState({});
+  const [open, setOpen] = React.useState(false);
 
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
     setPatients(res?.data?.resPatient);
+    
   };
   useEffect(() => {
     fetchPatients();
@@ -35,8 +41,14 @@ const AddPatient = () => {
     }
     fetchPatients();
   };
-  const editPatient = ()=>P
-  
+  const editPatient = (id) => {
+    setOpen(true);
+    const toEditPatient = patients.find((patient) => patient._id === id);
+    setSelectedPatient(toEditPatient);
+  };
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
   return (
     <Box
       sx={{
@@ -96,7 +108,12 @@ const AddPatient = () => {
               <Typography>Age: {item.age}</Typography>
               <Typography>Gender: {item.gender}</Typography>
               <Stack flexDirection={"row"} justifyContent={"space-between"}>
-                <Button variant="contained" onClick={() => {}}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    editPatient(item._id);
+                  }}
+                >
                   Edit
                 </Button>
                 <Button
@@ -108,6 +125,23 @@ const AddPatient = () => {
                   Delete
                 </Button>
               </Stack>
+              {open && (
+                <Box>
+                  <Drawer open={open} onClose={toggleDrawer(false)}>
+                    <Button
+                      sx={{ alignSelf: "flex-end" }}
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        setOpen((prev) => !prev);
+                      }}
+                    >
+                      <CloseIcon />
+                    </Button>
+                    <EditPatient user={selectedPatient} />
+                  </Drawer>
+                </Box>
+              )}
             </Stack>
           );
         })}
