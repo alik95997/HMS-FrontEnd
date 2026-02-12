@@ -1,3 +1,4 @@
+import { Slide } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -57,9 +58,10 @@ const AddDoctor = () => {
     const toEditTheDoctor = theDoctors.find((doctor) => doctor._id === theId);
     setSelectedDoctor(toEditTheDoctor);
     setIsEditOpen(true);
-    fetchDoctors();
+
     // const response = await api.patch(`doctor/${data?._id}`, data);
   };
+
   return (
     <Box
       sx={{
@@ -149,7 +151,7 @@ const AddDoctor = () => {
               );
             })}
       </Box>
-      {isEditOpen && <EditDoctor user={selectedDoctor} />}
+      {isEditOpen && <EditDoctor  user={selectedDoctor} />}
     </Box>
   );
 };

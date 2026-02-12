@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
 const EditDoctor = ({ user }) => {
@@ -30,17 +31,40 @@ const EditDoctor = ({ user }) => {
       console.log(error);
     }
   };
+
   return (
-    <form onSubmit={handleSubmit(editDoctor)}>
-      {/* <input type="text" value={user._id} disabled /> */}
-      <input type="text" {...register("name")} />
-      <input type="number" {...register("age")} />
-      <input type="text" {...register("gender")} />
-      <input type="text" {...register("speciality")} />
-      <Button type="submit" variant="contained">
-        Save
-      </Button>
-    </form>
+    <Box gap={3}>
+      <Stack flexDirection={"row"} justifyContent={"space-between"}>
+        <Typography fontWeight={"bold"} color="primary">
+          Edit Doctor
+        </Typography>
+        <CloseIcon />
+      </Stack>
+      <form onSubmit={handleSubmit(editDoctor)}>
+        <Grid container spacing={2}>
+          <Grid size={6}>
+            <TextField type="text" value={user._id} disabled fullWidth />
+          </Grid>
+          <Grid size={6}>
+            <TextField type="text" {...register("name")} fullWidth />
+          </Grid>
+          <Grid size={6}>
+            <TextField type="number" {...register("age")} fullWidth />
+          </Grid>
+          <Grid size={6}>
+            <TextField type="text" {...register("gender")} fullWidth />
+          </Grid>
+          <Grid size={12}>
+            <TextField type="text" {...register("speciality")} fullWidth />
+          </Grid>
+          <Grid size={12}>
+            <Button size="medium" type="submit" variant="contained" fullWidth>
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Box>
   );
 };
 
