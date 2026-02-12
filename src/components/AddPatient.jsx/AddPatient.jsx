@@ -35,6 +35,8 @@ const AddPatient = () => {
     }
     fetchPatients();
   };
+  const editPatient = ()=>P
+  
   return (
     <Box
       sx={{

@@ -1,4 +1,4 @@
-import { Slide } from "@mui/material";
+import { Drawer, Fade, Slide } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -9,10 +9,11 @@ import Box from "@mui/material/Box";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
 import EditDoctor from "./EditDoctor";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AddDoctor = () => {
+  const [open, setOpen] = useState(false);
   const [theDoctors, settheDoctors] = useState([]);
-  const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const {
     register,
@@ -31,6 +32,9 @@ const AddDoctor = () => {
     }
   };
 
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
   useEffect(() => {
     fetchDoctors();
   }, []);
@@ -55,11 +59,10 @@ const AddDoctor = () => {
   };
   // edit doctor function incomplete
   const editDoctor = async (theId) => {
+    setOpen(!open);
+    console.log();
     const toEditTheDoctor = theDoctors.find((doctor) => doctor._id === theId);
     setSelectedDoctor(toEditTheDoctor);
-    setIsEditOpen(true);
-
-    // const response = await api.patch(`doctor/${data?._id}`, data);
   };
 
   return (
@@ -151,7 +154,26 @@ const AddDoctor = () => {
               );
             })}
       </Box>
-      {isEditOpen && <EditDoctor  user={selectedDoctor} />}
+      {open && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Drawer open={open} onClose={toggleDrawer(false)}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setOpen((prev) => !prev)}
+              sx={{ alignSelf: "flex-end" }}
+            >
+              <CloseIcon />
+            </Button>
+            <EditDoctor onClick={toggleDrawer(false)} user={selectedDoctor} />
+          </Drawer>
+        </Box>
+      )}
     </Box>
   );
 };

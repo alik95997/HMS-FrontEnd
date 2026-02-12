@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
 const EditDoctor = ({ user }) => {
@@ -33,29 +32,54 @@ const EditDoctor = ({ user }) => {
   };
 
   return (
-    <Box gap={3}>
-      <Stack flexDirection={"row"} justifyContent={"space-between"}>
+    <Box sx={{ width: 350, p: 2 }} role="presentation">
+      <Stack>
         <Typography fontWeight={"bold"} color="primary">
           Edit Doctor
         </Typography>
-        <CloseIcon />
       </Stack>
       <form onSubmit={handleSubmit(editDoctor)}>
         <Grid container spacing={2}>
           <Grid size={6}>
-            <TextField type="text" value={user._id} disabled fullWidth />
+            <TextField
+              label="Dr ID"
+              type="text"
+              value={user._id}
+              disabled
+              fullWidth
+            />
           </Grid>
           <Grid size={6}>
-            <TextField type="text" {...register("name")} fullWidth />
+            <TextField
+              type="text"
+              label="Dr Name"
+              {...register("name")}
+              fullWidth
+            />
           </Grid>
           <Grid size={6}>
-            <TextField type="number" {...register("age")} fullWidth />
+            <TextField
+              type="number"
+              label="Dr Age"
+              {...register("age")}
+              fullWidth
+            />
           </Grid>
           <Grid size={6}>
-            <TextField type="text" {...register("gender")} fullWidth />
+            <TextField
+              type="text"
+              label="Dr Gender"
+              {...register("gender")}
+              fullWidth
+            />
           </Grid>
           <Grid size={12}>
-            <TextField type="text" {...register("speciality")} fullWidth />
+            <TextField
+              type="text"
+              label="Dr speciality"
+              {...register("speciality")}
+              fullWidth
+            />
           </Grid>
           <Grid size={12}>
             <Button size="medium" type="submit" variant="contained" fullWidth>
