@@ -55,13 +55,10 @@ const AddPatient = () => {
         display: "flex",
         border: "1px solid",
         p: 2,
-        alignItems: "center",
-        justifyContent: "start",
         gap: 2,
       }}
     >
-      {/* <ul> */}
-
+      {/* Add new Patient Box  */}
       <Box>
         <Typography
           mb={2}
@@ -99,52 +96,68 @@ const AddPatient = () => {
           </Stack>
         </form>
       </Box>
-      {/* Show Patient */}
-      {patients &&
-        patients.map((item, index) => {
-          return (
-            <Stack gap={2} key={index}>
-              <Typography>Name: {item.name}</Typography>
-              <Typography>Age: {item.age}</Typography>
-              <Typography>Gender: {item.gender}</Typography>
-              <Stack flexDirection={"row"} justifyContent={"space-between"}>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    editPatient(item._id);
-                  }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    deletePatient(item._id);
-                  }}
-                >
-                  Delete
-                </Button>
-              </Stack>
-              {open && (
-                <Box>
-                  <Drawer open={open} onClose={toggleDrawer(false)}>
+
+        {/* Show Patient */}
+      <Stack flexDirection="column" alignItems={"center"} gap={2}>
+        <Typography color="primary" fontWeight={"bold"}>
+          All Patient
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 3,
+          }}
+        >
+          {patients &&
+            patients.map((item, index) => {
+              return (
+                <Stack gap={2} key={index}>
+                  <Typography>Name: {item.name}</Typography>
+                  <Typography>Age: {item.age}</Typography>
+                  <Typography>Gender: {item.gender}</Typography>
+                  <Box
+                     sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
                     <Button
-                      sx={{ alignSelf: "flex-end" }}
                       variant="contained"
-                      color="error"
                       onClick={() => {
-                        setOpen((prev) => !prev);
+                        editPatient(item._id);
                       }}
                     >
-                      <CloseIcon />
+                      Edit
                     </Button>
-                    <EditPatient user={selectedPatient} />
-                  </Drawer>
-                </Box>
-              )}
-            </Stack>
-          );
-        })}
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        deletePatient(item._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </Stack>
+              );
+            })}
+        </Box>
+      </Stack>
+      {/* Show Edit Option  */}
+      {open && (
+        <Box>
+          <Drawer open={open} onClose={toggleDrawer(false)}>
+            <Button
+              sx={{ alignSelf: "flex-end" }}
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setOpen((prev) => !prev);
+              }}
+            >
+              <CloseIcon />
+            </Button>
+            <EditPatient user={selectedPatient} />
+          </Drawer>
+        </Box>
+      )}
     </Box>
   );
 };

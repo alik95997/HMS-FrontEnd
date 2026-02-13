@@ -44,42 +44,49 @@ const GetAppointments = () => {
 
   return (
     <>
-      <Stack flexDirection="row">
-        {appointments &&
-          appointments.map((appointment, index) => {
-            return (
-              <Box sx={{ border: "1px solid", p: 2, mx: 2 }} key={index}>
-                <Typography>
-                  Patient Name :{appointment?.patientId?.name}
-                </Typography>
-                <Typography>
-                  Doctor Name :{appointment?.doctorId?.name}
-                </Typography>
+      <Stack flexDirection="column" alignItems={"center"} gap={2}>
+        <Typography fontWeight={"bold"} color="primary">
+          Appointments
+        </Typography>
+        <Box sx={{ display: "flex", gap: 3 }}>
+          {appointments &&
+            appointments.map((appointment, index) => {
+              return (
+                <Stack gap={2} key={index}>
+                  <Typography>
+                    Patient Name :{appointment?.patientId?.name}
+                  </Typography>
+                  <Typography>
+                    Doctor Name :{appointment?.doctorId?.name}
+                  </Typography>
 
-                <Typography>
-                  Date {dayjs(appointment?.date).format("DD MMMM  YYYY")}
-                </Typography>
-                <Box>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      editAppointment(appointment._id);
-                    }}
+                  <Typography>
+                    Date {dayjs(appointment?.date).format("DD MMMM  YYYY")}
+                  </Typography>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      deleteAppointment(appointment._id);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </Box>
-              </Box>
-            );
-          })}
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        editAppointment(appointment._id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        deleteAppointment(appointment._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </Stack>
+              );
+            })}
+        </Box>
       </Stack>
       {open && <EditAppointment selectedAppointment={selectedId} />}
     </>

@@ -76,7 +76,12 @@ const EditAppointment = ({ selectedAppointment }) => {
     }
   };
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      <Typography color="primary" fontWeight={"bold"}>
+        Edit Patient
+      </Typography>
       <Stack gap={3}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Patients</InputLabel>

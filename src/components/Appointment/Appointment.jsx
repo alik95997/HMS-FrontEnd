@@ -71,8 +71,20 @@ export default function BasicSelect() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        border: "1px solid",
+        p: 2,
+        alignItems: "",
+        justifyContent: "start",
+        gap: 2,
+      }}
+    >
       <Stack gap={3}>
+        <Typography color="primary" fontWeight="bold">
+          Create Appointment
+        </Typography>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Patients</InputLabel>
           <Select

@@ -72,7 +72,7 @@ const AddDoctor = () => {
         display: "flex",
         border: "1px solid",
         p: 2,
-        alignItems: "center",
+        alignItems: "",
         justifyContent: "start",
         gap: 2,
       }}
@@ -122,39 +122,48 @@ const AddDoctor = () => {
         </form>
       </Box>
       {/* Show Doctor  */}
-      <Box display={"flex"} gap={2} flexWrap={"wrap"}>
-        {theDoctors.length === 0
-          ? "No Doctor Found"
-          : theDoctors.map((item, index) => {
-              return (
-                <Stack key={index} gap={2}>
-                  <Typography>Name: {item.name}</Typography>
-                  <Typography>Age: {item.age}</Typography>
-                  <Typography>Male : {item.male}</Typography>
-                  <Typography>Speciality: {item.speciality}</Typography>
-                  <Typography>{item._id}</Typography>
-                  <Stack flexDirection={"row"} justifyContent={"space-between"}>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        editDoctor(item._id);
-                      }}
+      <Stack flexDirection="column" alignItems={"center"} gap={2}>
+        <Typography color="primary" fontWeight={"bold"}>
+          All Doctors
+        </Typography>
+
+        <Box sx={{ display: "flex", gap: 3 }}>
+          {theDoctors.length === 0
+            ? "No Doctor Found"
+            : theDoctors.map((item, index) => {
+                return (
+                  <Stack key={index} gap={2}>
+                    <Typography>Name: {item.name}</Typography>
+                    <Typography>Age: {item.age}</Typography>
+                    <Typography>Male : {item.male}</Typography>
+                    <Typography>Speciality: {item.speciality}</Typography>
+                    <Typography>{item._id}</Typography>
+                    <Stack
+                      flexDirection={"row"}
+                      justifyContent={"space-between"}
                     >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        deleteDoctor(item._id);
-                      }}
-                    >
-                      Delete
-                    </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          editDoctor(item._id);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          deleteDoctor(item._id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
                   </Stack>
-                </Stack>
-              );
-            })}
-      </Box>
+                );
+              })}
+        </Box>
+      </Stack>
       {open && (
         <Box
           sx={{
@@ -180,4 +189,3 @@ const AddDoctor = () => {
 };
 
 export default AddDoctor;
-
