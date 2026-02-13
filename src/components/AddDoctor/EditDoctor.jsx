@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
+
 const EditDoctor = ({ user }) => {
   const {
     register,

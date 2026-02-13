@@ -12,7 +12,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect, useState } from "react";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
-import { Button } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
+import GetAppointments from "./GetAppointments";
 
 export default function BasicSelect() {
   const [patients, setPatients] = useState([]);
@@ -21,7 +22,6 @@ export default function BasicSelect() {
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [value, setValue] = useState(dayjs(new Date()));
-
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
     setPatients(res?.data?.resPatient);
@@ -72,55 +72,54 @@ export default function BasicSelect() {
   };
 
   return (
-    <Box>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Patients</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedPatient}
-          label="Patient Name"
-          onChange={handleChange}
-        >
-          {patients.map((patient) => (
-            <MenuItem value={patient}>
-              {patient.name} {patient.gender} {patient.age}
-            </MenuItem>
-          ))}
+    <Box sx={{ display: "flex" }}>
+      <Stack gap={3}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Patients</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedPatient}
+            label="Patient Name"
+            onChange={handleChange}
+          >
+            {patients.map((patient) => (
+              <MenuItem value={patient}>
+                {patient.name} {patient.gender} {patient.age}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-          {/* <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
-        </Select>
-      </FormControl>
-
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Doctors</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedDoctor}
-          label="Doctor Name"
-          onChange={handleDoctorChange}
-        >
-          {doctors.map((doctor) => (
-            <MenuItem value={doctor}>
-              {doctor.name} {doctor.speciality}
-              {doctor._id}
-            </MenuItem>
-          ))}
-
-          {/* <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
-        </Select>
-      </FormControl>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Controlled picker"
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
-        />
-      </LocalizationProvider>
-      <Button variant="contained" onClick={createAppointment}>Create Appointment</Button>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Doctors</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedDoctor}
+            label="Doctor Name"
+            onChange={handleDoctorChange}
+          >
+            {doctors.map((doctor) => (
+              <MenuItem value={doctor}>
+                {doctor.name} {doctor.speciality}
+                {doctor._id}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Controlled picker"
+            value={value}
+            onChange={(newValue) => setValue(newValue)}
+          />
+        </LocalizationProvider>
+        <Button variant="contained" onClick={createAppointment}>
+          Create Appointment
+        </Button>
+      </Stack>
+      <GetAppointments />
     </Box>
   );
 }

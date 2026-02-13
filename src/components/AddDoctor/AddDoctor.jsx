@@ -34,7 +34,7 @@ const AddDoctor = () => {
   useEffect(() => {
     fetchDoctors();
   }, []);
-  
+
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -122,7 +122,7 @@ const AddDoctor = () => {
         </form>
       </Box>
       {/* Show Doctor  */}
-      <Box display={"flex"} flexDirection={"column"} gap={2} flexWrap={"wrap"}>
+      <Box display={"flex"} gap={2} flexWrap={"wrap"}>
         {theDoctors.length === 0
           ? "No Doctor Found"
           : theDoctors.map((item, index) => {
@@ -180,3 +180,4 @@ const AddDoctor = () => {
 };
 
 export default AddDoctor;
+
