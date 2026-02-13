@@ -18,7 +18,6 @@ const AddPatient = () => {
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
     setPatients(res?.data?.resPatient);
-    
   };
   useEffect(() => {
     fetchPatients();
@@ -33,6 +32,7 @@ const AddPatient = () => {
     console.log(data);
     const response = await api.post("/patient/", data);
     console.log(response.data);
+    fetchPatients();
   };
   const deletePatient = async (id) => {
     const response = await api.delete(`patient/${id}`);

@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import api from "../../utils/axios";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import EditAppointment from "./EditAppointment";
 
 const GetAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
   const fetchAppointments = async () => {
     try {
       const response = await api.get("/appointment/");
@@ -21,7 +24,8 @@ const GetAppointments = () => {
 
   const editAppointment = (id) => {
     try {
-      alert("Function clicked");
+      setOpen(true);
+      setSelectedId(id);
     } catch (error) {
       console.log(error.message);
     }
@@ -77,6 +81,7 @@ const GetAppointments = () => {
             );
           })}
       </Stack>
+      {open && <EditAppointment selectedAppointment={selectedId} />}
     </>
   );
 };

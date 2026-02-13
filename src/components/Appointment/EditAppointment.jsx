@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import InputLabel from "@mui/material/InputLabel";
@@ -13,14 +14,15 @@ import { useEffect, useState } from "react";
 import api from "../../utils/axios";
 import { toast } from "react-toastify";
 import { Button, Stack, Typography } from "@mui/material";
-import GetAppointments from "./GetAppointments";
-import EditAppointment from "./EditAppointment";
-export default function BasicSelect() {
+const EditAppointment = ({ selectedAppointment }) => {
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [value, setValue] = useState(dayjs(new Date()));
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
-  const [value, setValue] = useState(dayjs(new Date()));
+  const [selectedAppointmentId, setSelectedAppointmentId] =
+    useState(selectedAppointment);
+  console.log(selectedAppointmentId);
   const fetchPatients = async () => {
     const res = await api.get("/patient/");
     setPatients(res?.data?.resPatient);
@@ -58,18 +60,21 @@ export default function BasicSelect() {
   };
   console.log(obj);
 
-  const createAppointment = async () => {
+  const editAppointment = async () => {
     try {
-      const response = await api.post("/appointment/", obj);
+      console.log(selectedAppointmentId);
+      const response = await api.patch(
+        `/appointment/${selectedAppointmentId}`,
+        obj,
+      );
       if (response) {
-        toast.success("Appointment created Successfully");
+        toast.success("Appointment Edited Successfully");
       }
     } catch (error) {
       toast.error("Erro creating appontment");
       console.log(error.message);
     }
   };
-
   return (
     <Box sx={{ display: "flex" }}>
       <Stack gap={3}>
@@ -114,11 +119,12 @@ export default function BasicSelect() {
             onChange={(newValue) => setValue(newValue)}
           />
         </LocalizationProvider>
-        <Button variant="contained" onClick={createAppointment}>
+        <Button variant="contained" onClick={editAppointment}>
           Create Appointment
         </Button>
       </Stack>
-      <GetAppointments />
     </Box>
   );
-}
+};
+
+export default EditAppointment;
