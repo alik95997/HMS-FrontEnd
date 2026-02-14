@@ -9,19 +9,22 @@ import api from "../../utils/axios";
 import EditPatient from "./EditPatient";
 import CloseIcon from "@mui/icons-material/Close";
 import { Drawer } from "@mui/material";
-
+import { useGetPatientsQuery } from "../../services/patient";
 const AddPatient = () => {
-  const [patients, setPatients] = useState([]);
+  const { data, error, isLoading } = useGetPatientsQuery();
+  const patients = data?.data;
+
+  // const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState({});
   const [open, setOpen] = React.useState(false);
 
-  const fetchPatients = async () => {
-    const res = await api.get("/patient/");
-    setPatients(res?.data?.resPatient);
-  };
-  useEffect(() => {
-    fetchPatients();
-  }, []);
+  // const fetchPatients = async () => {
+  //   const res = await api.get("/patient/");
+  //   setPatients(res?.data?.resPatient);
+  // };
+  // useEffect(() => {
+  //   fetchPatients();
+  // }, []);
 
   const {
     register,
@@ -29,7 +32,6 @@ const AddPatient = () => {
     formState: { errors },
   } = useForm();
   const addPatient = async (data) => {
-    console.log(data);
     const response = await api.post("/patient/", data);
     console.log(response.data);
     fetchPatients();
@@ -97,7 +99,7 @@ const AddPatient = () => {
         </form>
       </Box>
 
-        {/* Show Patient */}
+      {/* Show Patient */}
       <Stack flexDirection="column" alignItems={"center"} gap={2}>
         <Typography color="primary" fontWeight={"bold"}>
           All Patient
@@ -108,36 +110,47 @@ const AddPatient = () => {
             gap: 3,
           }}
         >
-          {patients &&
-            patients.map((item, index) => {
-              return (
-                <Stack gap={2} key={index}>
-                  <Typography>Name: {item.name}</Typography>
-                  <Typography>Age: {item.age}</Typography>
-                  <Typography>Gender: {item.gender}</Typography>
-                  <Box
-                     sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        editPatient(item._id);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        deletePatient(item._id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </Stack>
-              );
-            })}
+          {error ? (
+            <>Error</>
+          ) : isLoading ? (
+            <>Loading...</>
+          ) : data ? (
+            <>
+              {patients &&
+                patients.map((item, index) => {
+                  return (
+                    <Stack gap={2} key={index}>
+                      <Typography>Name: {item.name}</Typography>
+                      <Typography>Age: {item.age}</Typography>
+                      <Typography>Gender: {item.gender}</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            editPatient(item._id);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            deletePatient(item._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </Stack>
+                  );
+                })}
+            </>
+          ) : null}
         </Box>
       </Stack>
       {/* Show Edit Option  */}

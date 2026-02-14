@@ -15,12 +15,14 @@
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
     "@mui/x-date-pickers": "^8.27.0",
+    "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.5",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.71.1",
+    "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
