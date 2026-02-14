@@ -8,12 +8,11 @@ import Typography from "@mui/material/Typography";
 import api from "../../utils/axios";
 import EditPatient from "./EditPatient";
 import CloseIcon from "@mui/icons-material/Close";
-import { Drawer } from "@mui/material";
+import Drawer from "@mui/material/Drawer";
 import { useGetPatientsQuery } from "../../services/patient";
 const AddPatient = () => {
-  const { data, error, isLoading } = useGetPatientsQuery();
-  const patients = data?.data;
-
+  const { data: patients, error, isLoading } = useGetPatientsQuery();
+  
   // const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState({});
   const [open, setOpen] = React.useState(false);
@@ -111,46 +110,45 @@ const AddPatient = () => {
           }}
         >
           {error ? (
-            <>Error</>
+            <>Error Fething Patients</>
           ) : isLoading ? (
             <>Loading...</>
-          ) : data ? (
+          ) : (
             <>
-              {patients &&
-                patients.map((item, index) => {
-                  return (
-                    <Stack gap={2} key={index}>
-                      <Typography>Name: {item.name}</Typography>
-                      <Typography>Age: {item.age}</Typography>
-                      <Typography>Gender: {item.gender}</Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
+              {patients.map((item, index) => {
+                return (
+                  <Stack gap={2} key={index}>
+                    <Typography>Name: {item.name}</Typography>
+                    <Typography>Age: {item.age}</Typography>
+                    <Typography>Gender: {item.gender}</Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          editPatient(item._id);
                         }}
                       >
-                        <Button
-                          variant="contained"
-                          onClick={() => {
-                            editPatient(item._id);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={() => {
-                            deletePatient(item._id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Box>
-                    </Stack>
-                  );
-                })}
+                        Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          deletePatient(item._id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </Stack>
+                );
+              })}
             </>
-          ) : null}
+          )}
         </Box>
       </Stack>
       {/* Show Edit Option  */}

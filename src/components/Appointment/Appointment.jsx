@@ -15,19 +15,13 @@ import { toast } from "react-toastify";
 import { Button, Stack, Typography } from "@mui/material";
 import GetAppointments from "./GetAppointments";
 import EditAppointment from "./EditAppointment";
+import { useGetPatientsQuery } from "../../services/patient.js";
 export default function BasicSelect() {
-  const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [value, setValue] = useState(dayjs(new Date()));
-  const fetchPatients = async () => {
-    const res = await api.get("/patient/");
-    setPatients(res?.data?.resPatient);
-  };
-  useEffect(() => {
-    fetchPatients();
-  }, []);
+  const { data: patients, error, isLoading } = useGetPatientsQuery();
 
   const fetchDoctors = async () => {
     try {

@@ -10,10 +10,11 @@ import api from "../../utils/axios";
 import { toast } from "react-toastify";
 import EditDoctor from "./EditDoctor";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { useGetDoctorsQuery } from "../../services/doctor";
 const AddDoctor = () => {
+  const { data: doctors, isLoading, error } = useGetDoctorsQuery();
+  console.log(doctors)
   const [open, setOpen] = useState(false);
-  const [theDoctors, settheDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const {
     register,
@@ -22,18 +23,18 @@ const AddDoctor = () => {
   } = useForm();
 
   //get the patient
-  const fetchDoctors = async () => {
-    try {
-      const fetchedDoctor = await api.get("/doctor/");
-      console.log(fetchedDoctor?.data?.resDoctor);
-      settheDoctors(fetchedDoctor?.data?.resDoctor);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
+  // const fetchDoctors = async () => {
+  //   try {
+  //     const fetchedDoctor = await api.get("/doctor/");
+  //     console.log(fetchedDoctor?.data?.resDoctor);
+  //     settheDoctors(fetchedDoctor?.data?.resDoctor);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchDoctors();
+  // }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -56,13 +57,13 @@ const AddDoctor = () => {
     if (response) {
       toast.success("Doctor added successfully");
     }
-    fetchDoctors();
+    // fetchDoctors();
   };
   // edit doctor function incomplete
   const editDoctor = async (theId) => {
     setOpen(!open);
     console.log();
-    const toEditTheDoctor = theDoctors.find((doctor) => doctor._id === theId);
+    const toEditTheDoctor = doctors.find((doctor) => doctor._id === theId);
     setSelectedDoctor(toEditTheDoctor);
   };
 
@@ -128,19 +129,24 @@ const AddDoctor = () => {
         </Typography>
 
         <Box sx={{ display: "flex", gap: 3 }}>
-          {theDoctors.length === 0
-            ? "No Doctor Found"
-            : theDoctors.map((item, index) => {
+          {error ? (
+            <>Error Fething Doctors</>
+          ) : isLoading ? (
+            <>Loading...</>
+          ) : (
+            <>
+              {doctors.map((item, index) => {
                 return (
-                  <Stack key={index} gap={2}>
+                  <Stack gap={2} key={index}>
                     <Typography>Name: {item.name}</Typography>
                     <Typography>Age: {item.age}</Typography>
-                    <Typography>Male : {item.male}</Typography>
+                    <Typography>Gender: {item.gender}</Typography>
                     <Typography>Speciality: {item.speciality}</Typography>
-                    <Typography>{item._id}</Typography>
-                    <Stack
-                      flexDirection={"row"}
-                      justifyContent={"space-between"}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
                       <Button
                         variant="contained"
@@ -158,10 +164,12 @@ const AddDoctor = () => {
                       >
                         Delete
                       </Button>
-                    </Stack>
+                    </Box>
                   </Stack>
                 );
               })}
+            </>
+          )}
         </Box>
       </Stack>
       {open && (
