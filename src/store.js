@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { patientApi } from "./services/patient";
-import { doctorApi } from "./services/doctor";
+import { patientApi } from "./services/patientApi";
+import { doctorApi } from "./services/doctorApi";
 export const store = configureStore({
   reducer: {
     [patientApi.reducerPath]: patientApi.reducer,

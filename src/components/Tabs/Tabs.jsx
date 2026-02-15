@@ -4,11 +4,10 @@ import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AddPatient from "../AddPatient.jsx/AddPatient";
 import AddDoctor from "../AddDoctor/AddDoctor";
 import Appointment from "../Appointment/Appointment";
+import Patient from "../AddPatient.jsx/Patient";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,7 +67,7 @@ export default function FullWidthTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>
-        <AddPatient />
+        <Patient />
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
         <AddDoctor />

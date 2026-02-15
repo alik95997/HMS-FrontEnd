@@ -10,10 +10,10 @@ import api from "../../utils/axios";
 import { toast } from "react-toastify";
 import EditDoctor from "./EditDoctor";
 import CloseIcon from "@mui/icons-material/Close";
-import { useGetDoctorsQuery } from "../../services/doctor";
+import { useGetDoctorsQuery } from "../../services/doctorApi";
 const AddDoctor = () => {
   const { data: doctors, isLoading, error } = useGetDoctorsQuery();
-  console.log(doctors)
+  console.log(doctors);
   const [open, setOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const {

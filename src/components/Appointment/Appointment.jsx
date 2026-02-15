@@ -15,26 +15,36 @@ import { toast } from "react-toastify";
 import { Button, Stack, Typography } from "@mui/material";
 import GetAppointments from "./GetAppointments";
 import EditAppointment from "./EditAppointment";
-import { useGetPatientsQuery } from "../../services/patient.js";
+import { useGetPatientsQuery } from "../../services/patientApi.js";
+import { useGetDoctorsQuery } from "../../services/doctorApi.js";
 export default function BasicSelect() {
-  const [doctors, setDoctors] = useState([]);
+  // const [doctors, setDoctors] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [value, setValue] = useState(dayjs(new Date()));
-  const { data: patients, error, isLoading } = useGetPatientsQuery();
+  const {
+    data: patients,
+    error: patientsError,
+    isLoading: isLoadingPatients,
+  } = useGetPatientsQuery();
+  const {
+    data: doctors,
+    error: doctorsError,
+    isLoading: isLoadingDoctors,
+  } = useGetPatientsQuery();
 
-  const fetchDoctors = async () => {
-    try {
-      const fetchedDoctor = await api.get("/doctor/");
-      // console.log(fetchedDoctor?.data?.resDoctor);
-      setDoctors(fetchedDoctor?.data?.resDoctor);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
+  // const fetchDoctors = async () => {
+  //   try {
+  //     const fetchedDoctor = await api.get("/doctor/");
+  //     // console.log(fetchedDoctor?.data?.resDoctor);
+  //     setDoctors(fetchedDoctor?.data?.resDoctor);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchDoctors();
+  // }, []);
 
   const handleChange = (event) => {
     setSelectedPatient(event.target.value);
