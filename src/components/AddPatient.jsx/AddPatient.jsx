@@ -2,7 +2,7 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useCreatePatientMutation } from "../../services/patientApi.js";
 const AddPatient = () => {
-  const { createPatient } = useCreatePatientMutation();
+  const [createPatients] = useCreatePatientMutation();
 
   const {
     register,
@@ -13,11 +13,10 @@ const AddPatient = () => {
   const handleAddPatient = async (data) => {
     try {
       console.log(data);
-      createPatient(data);
+      await createPatients(data);
     } catch (error) {
       console.log(error.message);
     }
-    // await addPatient(data);
   };
   return (
     <Box>

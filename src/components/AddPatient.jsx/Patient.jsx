@@ -9,26 +9,22 @@ import EditPatient from "./EditPatient";
 import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 
-import { useGetPatientsQuery } from "../../services/patientApi.js";
+import {
+  useGetPatientsQuery,
+  useDeletePatientMutation,
+} from "../../services/patientApi.js";
 import AddPatient from "./AddPatient";
 const Patient = () => {
+  const [deletePatient] = useDeletePatientMutation();
   const {
     data: patients,
     error: patientError,
     isLoading: isLoadingPatient,
   } = useGetPatientsQuery();
 
-  // const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState({});
   const [open, setOpen] = React.useState(false);
 
-  const deletePatient = async (id) => {
-    const response = await api.delete(`patient/${id}`);
-    if (response) {
-      alert("deleted successfully");
-    }
-    fetchPatients();
-  };
   const editPatient = (id) => {
     setOpen(true);
     const toEditPatient = patients.find((patient) => patient._id === id);
@@ -47,43 +43,7 @@ const Patient = () => {
       }}
     >
       {/* Add new Patient Box  */}
-      {/* <Box>
-        <Typography
-          mb={2}
-          textAlign="center"
-          color="primary"
-          fontWeight={"bold"}
-        >
-          Add New Patient
-        </Typography>
-        <form onSubmit={handleSubmit(handleAddPatient)}>
-          <Stack gap={3}>
-            <TextField
-              id="outlined-basic"
-              label="Name"
-              variant="outlined"
-              {...register("name")}
-            />
 
-            <TextField
-              id="outlined-basic"
-              {...register("age")}
-              label="Age"
-              variant="outlined"
-            />
-            <TextField
-              id="outlined-basic"
-              label="Gender"
-              {...register("gender")}
-              variant="outlined"
-            />
-
-            <Button variant="contained" type="submit" fullWidth>
-              Submit
-            </Button>
-          </Stack>
-        </form>
-      </Box> */}
       <AddPatient />
       {/* Show Patient */}
       <Stack flexDirection="column" alignItems={"center"} gap={2}>
