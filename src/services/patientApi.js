@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const patientApi = createApi({
   reducerPath: "patientApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/" }),
-  
+
   endpoints: (build) => ({
     // get patient
     getPatients: build.query({
@@ -20,9 +20,9 @@ export const patientApi = createApi({
     // update patient
     updatePatient: build.mutation({
       query: (updatedPatient) => {
-        const { id } = updatedPatient;
+        const { _id } = updatedPatient;
         return {
-          url: `/patient/${id}`,
+          url: `/patient/${_id}`,
           method: "PATCH",
           body: updatedPatient,
         };

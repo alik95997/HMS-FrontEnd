@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import api from "../../utils/axios";
 import { toast } from "react-toastify";
-
+import { useUpdateDoctorMutation } from "../../services/doctorApi";
 const EditDoctor = ({ user }) => {
+  const [updateDoctor, { isLoading, isError }] = useUpdateDoctorMutation();
   const {
     register,
     handleSubmit,
@@ -20,14 +20,13 @@ const EditDoctor = ({ user }) => {
   console.log(user);
   const editDoctor = async (data) => {
     try {
-      console.log(user._id);
-      const response = await api.patch(`/doctor/${user._id}`, data);
-      if (response) {
-        toast.success("Doctor Updated");
-      } else {
-        toast.error("Error");
-      }
+      console.log(data);
+      const obj = { ...data, _id: user._id };
+      console.log(obj);
+      await updateDoctor(obj);
+      toast.success("doctor edited successfully");
     } catch (error) {
+      toast.error("Could not edit doctor");
       console.log(error);
     }
   };
@@ -83,7 +82,13 @@ const EditDoctor = ({ user }) => {
             />
           </Grid>
           <Grid size={12}>
-            <Button size="medium" type="submit" variant="contained" fullWidth>
+            <Button
+              size="medium"
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={isLoading}
+            >
               Save
             </Button>
           </Grid>

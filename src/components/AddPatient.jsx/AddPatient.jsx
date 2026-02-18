@@ -2,7 +2,7 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useCreatePatientMutation } from "../../services/patientApi.js";
 const AddPatient = () => {
-  const [createPatients] = useCreatePatientMutation();
+  const [createPatients, { isLoading, isError }] = useCreatePatientMutation();
 
   const {
     register,
@@ -45,7 +45,12 @@ const AddPatient = () => {
             variant="outlined"
           />
 
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            disabled={isLoading}
+          >
             Submit
           </Button>
         </Stack>

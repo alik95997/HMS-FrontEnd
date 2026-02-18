@@ -5,7 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import AddDoctor from "../AddDoctor/AddDoctor";
+import Doctor from "../Doctor/Doctor.jsx";
 import Appointment from "../Appointment/Appointment";
 import Patient from "../AddPatient.jsx/Patient";
 
@@ -70,7 +70,7 @@ export default function FullWidthTabs() {
         <Patient />
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        <AddDoctor />
+        <Doctor />
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         {/* Item Three */}
