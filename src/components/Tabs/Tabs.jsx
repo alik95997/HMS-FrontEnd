@@ -7,7 +7,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Doctor from "../Doctor/Doctor.jsx";
 import Appointment from "../Appointment/Appointment";
-import Patient from "../AddPatient.jsx/Patient";
+import Patient from "../Patient/Patient.jsx";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

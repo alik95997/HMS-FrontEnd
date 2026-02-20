@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
-import api from "../../utils/axios";
-import EditPatient from "./EditPatient";
+import api from "../../utils/axios.js";
+import EditPatient from "./EditPatient.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 
@@ -13,7 +13,7 @@ import {
   useGetPatientsQuery,
   useDeletePatientMutation,
 } from "../../services/patientApi.js";
-import AddPatient from "./AddPatient";
+import AddPatient from "./AddPatient.jsx";
 const Patient = () => {
   const [deletePatient] = useDeletePatientMutation();
   const {

@@ -5,20 +5,16 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
-import { useEffect, useState } from "react";
-import api from "../../utils/axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Stack, Typography } from "@mui/material";
 import GetAppointments from "./GetAppointments";
-import EditAppointment from "./EditAppointment";
 import { useGetPatientsQuery } from "../../services/patientApi.js";
 import { useGetDoctorsQuery } from "../../services/doctorApi.js";
+import { useCreateApointmentMutation } from "../../services/appointment.js";
 export default function BasicSelect() {
-  // const [doctors, setDoctors] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [value, setValue] = useState(dayjs(new Date()));
@@ -31,43 +27,23 @@ export default function BasicSelect() {
     data: doctors,
     error: doctorsError,
     isLoading: isLoadingDoctors,
-  } = useGetPatientsQuery();
+  } = useGetDoctorsQuery();
 
-  // const fetchDoctors = async () => {
-  //   try {
-  //     const fetchedDoctor = await api.get("/doctor/");
-  //     // console.log(fetchedDoctor?.data?.resDoctor);
-  //     setDoctors(fetchedDoctor?.data?.resDoctor);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchDoctors();
-  // }, []);
+  const [createApointment] = useCreateApointmentMutation();
 
-  const handleChange = (event) => {
-    setSelectedPatient(event.target.value);
-  };
-  const handleDoctorChange = (event) => {
-    setSelectedDoctor(event.target.value);
-  };
-  // console.log(selectedPatient);
-  // console.log(selectedDoctor);
-  // console.log(value);
   const obj = {
     doctorId: selectedDoctor._id,
     patientId: selectedPatient._id,
     date: value,
   };
-  console.log(obj);
 
-  const createAppointment = async () => {
+  const handleCreateAppointment = async () => {
     try {
-      const response = await api.post("/appointment/", obj);
-      if (response) {
-        toast.success("Appointment created Successfully");
-      }
+      await createApointment(obj);
+      // const response = await api.post("/appointment/", obj);
+      // if (response) {
+      //   toast.success("Appointment created Successfully");
+      // }
     } catch (error) {
       toast.error("Erro creating appontment");
       console.log(error.message);
@@ -96,13 +72,14 @@ export default function BasicSelect() {
             id="demo-simple-select"
             value={selectedPatient}
             label="Patient Name"
-            onChange={handleChange}
+            onChange={(e) => setSelectedPatient(e.target.value)}
           >
-            {patients.map((patient) => (
-              <MenuItem value={patient}>
-                {patient.name} {patient.gender} {patient.age}
-              </MenuItem>
-            ))}
+            {patients &&
+              patients.map((patient) => (
+                <MenuItem value={patient}>
+                  {patient.name} {patient.gender} {patient.age}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
 
@@ -113,14 +90,15 @@ export default function BasicSelect() {
             id="demo-simple-select"
             value={selectedDoctor}
             label="Doctor Name"
-            onChange={handleDoctorChange}
+            onChange={(e) => setSelectedDoctor(e.target.value)}
           >
-            {doctors.map((doctor) => (
-              <MenuItem value={doctor}>
-                {doctor.name} {doctor.speciality}
-                {doctor._id}
-              </MenuItem>
-            ))}
+            {doctors &&
+              doctors.map((doctor) => (
+                <MenuItem value={doctor}>
+                  {doctor.name} {doctor.speciality}
+                  {doctor._id}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -130,7 +108,7 @@ export default function BasicSelect() {
             onChange={(newValue) => setValue(newValue)}
           />
         </LocalizationProvider>
-        <Button variant="contained" onClick={createAppointment}>
+        <Button variant="contained" onClick={handleCreateAppointment}>
           Create Appointment
         </Button>
       </Stack>

@@ -3,6 +3,7 @@ import { useAddDoctorMutation } from "../../services/doctorApi";
 import { useForm } from "react-hook-form";
 
 import React from "react";
+import { toast } from "react-toastify";
 
 const AddDoctor = () => {
   const {

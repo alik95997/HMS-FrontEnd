@@ -3,11 +3,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const patientApi = createApi({
   reducerPath: "patientApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/" }),
-
+  tagTypes: ["Patients"],
   endpoints: (build) => ({
     // get patient
     getPatients: build.query({
       query: () => "patient",
+      providesTags: ["Patients"],
     }),
     // add patient
     createPatient: build.mutation({
@@ -16,6 +17,7 @@ export const patientApi = createApi({
         method: "POST",
         body: newPatient,
       }),
+      invalidatesTags: ["Patients"],
     }),
     // update patient
     updatePatient: build.mutation({
@@ -27,6 +29,7 @@ export const patientApi = createApi({
           body: updatedPatient,
         };
       },
+      invalidatesTags: ["Patients"],
     }),
 
     //    delete patient
@@ -37,6 +40,7 @@ export const patientApi = createApi({
         method: "DELETE",
         body: id,
       }),
+      invalidatesTags: ["Patients"],
     }),
     //
   }),

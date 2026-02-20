@@ -3,18 +3,20 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const doctorApi = createApi({
   reducerPath: "doctorApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/" }),
-  tagTypes: ["Doctor"],
+  tagTypes: ["Doctors"],
   endpoints: (build) => ({
     getDoctors: build.query({
       query: () => "doctor",
+      providesTags: ["Doctors"],
     }),
     // add doctor
     addDoctor: build.mutation({
       query: (newDoctor) => ({
-        url: "patient",
+        url: "doctor",
         method: "POST",
         body: newDoctor,
       }),
+      invalidatesTags: ["Doctors"],
     }),
     // update doctor
     updateDoctor: build.mutation({
@@ -26,6 +28,7 @@ export const doctorApi = createApi({
           body: newDoctor,
         };
       },
+      invalidatesTags: ["Doctors"],
     }),
     // delete doctor
     deleteDoctor: build.mutation({
@@ -33,6 +36,7 @@ export const doctorApi = createApi({
         url: `doctor/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Doctors"],
     }),
   }),
 });

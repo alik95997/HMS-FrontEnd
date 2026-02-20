@@ -1,43 +1,25 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../../utils/axios";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import EditAppointment from "./EditAppointment";
-
+import {
+  useGetApointmentQuery,
+  useDeleteApointmentMutation,
+} from "../../services/appointment";
 const GetAppointments = () => {
-  const [appointments, setAppointments] = useState([]);
+  const { data: appointments, isError, isLoading } = useGetApointmentQuery();
+  const [deleteApointment] = useDeleteApointmentMutation();
   const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
-  const fetchAppointments = async () => {
-    try {
-      const response = await api.get("/appointment/");
-      console.log(response?.data?.appointmentResponse);
-      setAppointments(response?.data?.appointmentResponse);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
+  const [selectedAppointmentID, setSelectedAppointmentID] = useState("");
 
-  const editAppointment = (id) => {
+  const editAppointment = (appointmentID) => {
     try {
       setOpen(true);
-      setSelectedId(id);
+      console.log(appointmentID);
+      setSelectedAppointmentID(appointmentID);
     } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const deleteAppointment = async (id) => {
-    try {
-      const response = await api.delete(`/appointment/${id}`);
-      toast.success("Appointment Deleted successfully ");
-      fetchAppointments();
-    } catch (error) {
-      toast.error("Error deleting Appointment ");
       console.log(error.message);
     }
   };
@@ -59,7 +41,6 @@ const GetAppointments = () => {
                   <Typography>
                     Doctor Name :{appointment?.doctorId?.name}
                   </Typography>
-
                   <Typography>
                     Date {dayjs(appointment?.date).format("DD MMMM  YYYY")}
                   </Typography>
@@ -71,13 +52,14 @@ const GetAppointments = () => {
                       onClick={() => {
                         editAppointment(appointment._id);
                       }}
+
                     >
                       Edit
                     </Button>
                     <Button
                       variant="contained"
                       onClick={() => {
-                        deleteAppointment(appointment._id);
+                        deleteApointment(appointment._id);
                       }}
                     >
                       Delete
@@ -88,7 +70,9 @@ const GetAppointments = () => {
             })}
         </Box>
       </Stack>
-      {open && <EditAppointment selectedAppointment={selectedId} />}
+      {open && (
+        <EditAppointment selectedAppointmentID={selectedAppointmentID} />
+      )}
     </>
   );
 };
