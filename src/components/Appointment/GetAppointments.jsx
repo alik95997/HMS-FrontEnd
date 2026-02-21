@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Drawer, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import api from "../../utils/axios";
 import dayjs from "dayjs";
@@ -8,6 +8,8 @@ import {
   useGetApointmentQuery,
   useDeleteApointmentMutation,
 } from "../../services/appointment";
+import CloseIcon from "@mui/icons-material/Close";
+
 const GetAppointments = () => {
   const { data: appointments, isError, isLoading } = useGetApointmentQuery();
   const [deleteApointment] = useDeleteApointmentMutation();
@@ -23,7 +25,9 @@ const GetAppointments = () => {
       console.log(error.message);
     }
   };
-
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
   return (
     <>
       <Stack flexDirection="column" alignItems={"center"} gap={2}>
@@ -52,7 +56,6 @@ const GetAppointments = () => {
                       onClick={() => {
                         editAppointment(appointment._id);
                       }}
-
                     >
                       Edit
                     </Button>
@@ -71,7 +74,24 @@ const GetAppointments = () => {
         </Box>
       </Stack>
       {open && (
-        <EditAppointment selectedAppointmentID={selectedAppointmentID} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Drawer open={open} onClose={toggleDrawer(false)}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => setOpen((prev) => !prev)}
+              sx={{ alignSelf: "flex-end" }}
+            >
+              <CloseIcon />
+            </Button>
+            <EditAppointment onClick={toggleDrawer(false)} />
+          </Drawer>
+        </Box>
       )}
     </>
   );
