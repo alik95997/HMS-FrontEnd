@@ -14,13 +14,13 @@ const GetAppointments = () => {
   const { data: appointments, isError, isLoading } = useGetApointmentQuery();
   const [deleteApointment] = useDeleteApointmentMutation();
   const [open, setOpen] = useState(false);
-  const [selectedAppointmentID, setSelectedAppointmentID] = useState("");
+  const [selectedAppointment, setSelectedAppointment] = useState("");
 
-  const editAppointment = (appointmentID) => {
+  const editAppointment = (selectedAppointment) => {
     try {
       setOpen(true);
-      console.log(appointmentID);
-      setSelectedAppointmentID(appointmentID);
+      console.log(selectedAppointment);
+      setSelectedAppointment(selectedAppointment);
     } catch (error) {
       console.log(error.message);
     }
@@ -54,7 +54,7 @@ const GetAppointments = () => {
                     <Button
                       variant="contained"
                       onClick={() => {
-                        editAppointment(appointment._id);
+                        editAppointment(appointment);
                       }}
                     >
                       Edit
@@ -89,7 +89,10 @@ const GetAppointments = () => {
             >
               <CloseIcon />
             </Button>
-            <EditAppointment onClick={toggleDrawer(false)} />
+            <EditAppointment
+              user={selectedAppointment}
+              onClick={toggleDrawer(false)}
+            />
           </Drawer>
         </Box>
       )}

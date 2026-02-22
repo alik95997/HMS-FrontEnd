@@ -125,7 +125,6 @@ export default function AppointmentPage() {
           </Button>
         </Stack>
         <GetAppointments />
-        
       </Box>
     </DashboardLayout>
   );

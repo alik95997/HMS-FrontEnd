@@ -17,10 +17,16 @@ import Typography from "@mui/material/Typography";
 import PersonalInjuryIcon from "@mui/icons-material/PersonalInjury";
 import MedicationIcon from "@mui/icons-material/Medication";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
 function DashboardLayout(props) {
+  const getActiveStyles = ({ isActive }) => {
+    return {
+      color: isActive ? "red" : "blue",
+      
+    };
+  };
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -50,12 +56,14 @@ function DashboardLayout(props) {
       <Divider />
       <List>
         {menuArray.map((text, index) => (
-          <ListItem key={index}>
-            <ListItemButton onClick={() => navigate(text.url)}>
-              <ListItemIcon>{<text.icon />}</ListItemIcon>
-              <ListItemText primary={text.title} />
-            </ListItemButton>
-          </ListItem>
+          <NavLink style={getActiveStyles} key={index} to={text.url}>
+            <ListItem>
+              <ListItemButton>
+                <ListItemIcon>{<text.icon />}</ListItemIcon>
+                <ListItemText primary={text.title} />
+              </ListItemButton>
+            </ListItem>
+          </NavLink>
         ))}
       </List>
 

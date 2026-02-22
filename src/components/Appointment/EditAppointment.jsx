@@ -14,9 +14,10 @@ import { useGetPatientsQuery } from "../../services/patientApi.js";
 import { useGetDoctorsQuery } from "../../services/doctorApi.js";
 import { useUpdateAppointmentMutation } from "../../services/appointment.js";
 
-export default function EditAppointment({ selectedAppointmentID }) {
+export default function EditAppointment({ user }) {
   const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
+  
   const [value, setValue] = useState(dayjs(new Date()));
   const {
     data: patients,
@@ -32,7 +33,7 @@ export default function EditAppointment({ selectedAppointmentID }) {
   const [updateAppointment] = useUpdateAppointmentMutation();
 
   const obj = {
-    _id: selectedAppointmentID,
+    _id: user._id,
     doctorId: selectedDoctor._id,
     patientId: selectedPatient._id,
     date: value,
@@ -41,10 +42,7 @@ export default function EditAppointment({ selectedAppointmentID }) {
   const handleUpdateAppointment = async () => {
     try {
       await updateAppointment(obj);
-      // const response = await api.post("/appointment/", obj);
-      // if (response) {
-      //   toast.success("Appointment created Successfully");
-      // }
+      toast.success("Edited Successfully");
     } catch (error) {
       toast.error("Erro creating appontment");
       console.log(error.message);
@@ -71,7 +69,6 @@ export default function EditAppointment({ selectedAppointmentID }) {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            
             value={selectedPatient}
             label="Patient Name"
             onChange={(e) => setSelectedPatient(e.target.value)}
