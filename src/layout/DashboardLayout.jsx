@@ -24,7 +24,6 @@ function DashboardLayout(props) {
   const getActiveStyles = ({ isActive }) => {
     return {
       color: isActive ? "red" : "blue",
-      
     };
   };
   const { window } = props;
